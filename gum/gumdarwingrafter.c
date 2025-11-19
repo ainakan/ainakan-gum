@@ -300,7 +300,7 @@ gum_darwin_grafter_graft (GumDarwinGrafter * self,
     const GumDarwinSegment * segment =
         &g_array_index (module->segments, GumDarwinSegment, i);
 
-    if (g_str_has_prefix (segment->name, "__FRIDA_"))
+    if (g_str_has_prefix (segment->name, "__AINAKAN_"))
       goto already_grafted;
   }
 
@@ -1012,7 +1012,7 @@ gum_darwin_grafter_transform_load_commands (gconstpointer commands_in,
 
         seg.cmd = GUM_LC_SEGMENT_64;
         seg.cmdsize = sizeof (seg) + sizeof (sect);
-        g_snprintf (seg.segname, sizeof (seg.segname), "__FRIDA_TEXT%u", j);
+        g_snprintf (seg.segname, sizeof (seg.segname), "__AINAKAN_TEXT%u", j);
         seg.vmaddr = descriptor->code_address;
         seg.vmsize = descriptor->code_size;
         seg.fileoff = descriptor->code_offset;
@@ -1042,7 +1042,7 @@ gum_darwin_grafter_transform_load_commands (gconstpointer commands_in,
 
         seg.cmd = GUM_LC_SEGMENT_64;
         seg.cmdsize = sizeof (seg) + sizeof (sect);
-        g_snprintf (seg.segname, sizeof (seg.segname), "__FRIDA_DATA%u", j);
+        g_snprintf (seg.segname, sizeof (seg.segname), "__AINAKAN_DATA%u", j);
         seg.vmaddr = descriptor->data_address;
         seg.vmsize = descriptor->data_size;
         seg.fileoff = descriptor->data_offset;

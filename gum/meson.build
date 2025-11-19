@@ -368,8 +368,8 @@ if lzma_dep.found()
   gum_internal_deps += lzma_dep
 endif
 
-gum = library('frida-gum-' + api_version, gum_sources + gum_enums,
-  c_args: frida_component_cflags,
+gum = library('ainakan-gum-' + api_version, gum_sources + gum_enums,
+  c_args: ainakan_component_cflags,
   include_directories: gum_incdirs,
   link_args: extra_libs_private,
   dependencies: gum_internal_deps + extra_deps,
@@ -377,15 +377,15 @@ gum = library('frida-gum-' + api_version, gum_sources + gum_enums,
 )
 
 uninstalled_variables = {
-  'frida_vapidir': meson.project_source_root() / 'vapi',
-  'frida_dbghelp_prefix': uninstalled_dbghelp_prefix,
-  'frida_symsrv_prefix': uninstalled_symsrv_prefix,
+  'ainakan_vapidir': meson.project_source_root() / 'vapi',
+  'ainakan_dbghelp_prefix': uninstalled_dbghelp_prefix,
+  'ainakan_symsrv_prefix': uninstalled_symsrv_prefix,
 }
 
 installed_variables = {
-  'frida_vapidir': get_option('prefix') / get_option('datadir') / 'vala' / 'vapi',
-  'frida_dbghelp_prefix': dbghelp_prefix,
-  'frida_symsrv_prefix': symsrv_prefix,
+  'ainakan_vapidir': get_option('prefix') / get_option('datadir') / 'vala' / 'vapi',
+  'ainakan_dbghelp_prefix': dbghelp_prefix,
+  'ainakan_symsrv_prefix': symsrv_prefix,
 }
 
 gum_dep = declare_dependency(link_with: gum,
@@ -398,7 +398,7 @@ gum_dep = declare_dependency(link_with: gum,
 
 if gir_scanner.found()
   gum_introspect = executable('gum-introspect', 'gumintrospect.c',
-    c_args: frida_component_cflags,
+    c_args: ainakan_component_cflags,
     dependencies: [gum_dep, gir_dep],
   )
 
@@ -425,9 +425,9 @@ endif
 
 pkg = import('pkgconfig')
 pkg.generate(gum,
-  filebase: 'frida-gum-' + api_version,
+  filebase: 'ainakan-gum-' + api_version,
   name: 'Gum',
-  version: frida_version,
+  version: ainakan_version,
   description: 'Low-level code instrumentation library',
   requires: ['glib-2.0', 'gobject-2.0', 'gio-2.0', 'capstone'],
   requires_private: extra_requires_private,
@@ -438,7 +438,7 @@ pkg.generate(gum,
   uninstalled_variables: uninstalled_variables,
 )
 
-meson.override_dependency('frida-gum-' + api_version, gum_dep)
+meson.override_dependency('ainakan-gum-' + api_version, gum_dep)
 
 if 'gum' in get_option('devkits')
   subdir('devkit')

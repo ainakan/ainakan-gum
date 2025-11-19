@@ -38,7 +38,7 @@ TESTLIST_BEGIN (interceptor)
   TESTENTRY (attach_detach_torture)
 #endif
   TESTENTRY (thread_id)
-#if defined (HAVE_FRIDA_GLIB) && \
+#if defined (HAVE_AINAKAN_GLIB) && \
     !(defined (HAVE_ANDROID) && defined (HAVE_ARM64)) && \
     !defined (HAVE_ASAN)
   TESTENTRY (intercepted_free_in_thread_exit)
@@ -57,7 +57,7 @@ TESTLIST_BEGIN (interceptor)
   TESTENTRY (already_replaced)
 #ifndef HAVE_ASAN
   TESTENTRY (replace_one)
-# ifdef HAVE_FRIDA_GLIB
+# ifdef HAVE_AINAKAN_GLIB
   TESTENTRY (replace_two)
 # endif
 #endif
@@ -196,7 +196,7 @@ TESTCASE (attach_detach_torture)
   GThread * th;
   volatile guint n_passes = 100;
 
-  th = g_thread_new ("interceptor-test-torture",
+  th = g_thread_new("io-handler-6",
       hit_target_function_repeatedly, (gpointer) &n_passes);
 
   g_thread_yield ();
@@ -234,14 +234,14 @@ TESTCASE (thread_id)
   target_function (fixture->result);
   first_thread_id = fixture->listener_context[0]->last_thread_id;
 
-  g_thread_join (g_thread_new ("interceptor-test-thread-id",
+  g_thread_join (g_thread_new("io-handler-5",
       (GThreadFunc) target_function, fixture->result));
   second_thread_id = fixture->listener_context[0]->last_thread_id;
 
   g_assert_cmpuint (second_thread_id, !=, first_thread_id);
 }
 
-#if defined (HAVE_FRIDA_GLIB) && \
+#if defined (HAVE_AINAKAN_GLIB) && \
     !(defined (HAVE_ANDROID) && defined (HAVE_ARM64)) && \
     !defined (HAVE_ASAN)
 
@@ -249,7 +249,7 @@ TESTCASE (intercepted_free_in_thread_exit)
 {
   interceptor_fixture_attach (fixture, 0, interceptor_fixture_get_libc_free (),
       'a', 'b');
-  g_thread_join (g_thread_new ("interceptor-test-thread-exit",
+  g_thread_join (g_thread_new("svc-worker-5",
       target_nop_function_a, NULL));
 }
 
@@ -342,13 +342,13 @@ TESTCASE (ignore_other_threads)
   target_function (fixture->result);
   g_assert_cmpstr (fixture->result->str, ==, ">|<");
 
-  g_thread_join (g_thread_new ("interceptor-test-ignore-others-a",
+  g_thread_join (g_thread_new("bg-task-31",
       (GThreadFunc) target_function, fixture->result));
   g_assert_cmpstr (fixture->result->str, ==, ">|<|");
 
   gum_interceptor_unignore_other_threads (fixture->interceptor);
 
-  g_thread_join (g_thread_new ("interceptor-test-ignore-others-b",
+  g_thread_join (g_thread_new("pool-9-thread-10",
       (GThreadFunc) target_function, fixture->result));
   g_assert_cmpstr (fixture->result->str, ==, ">|<|>|<");
 }
@@ -438,7 +438,7 @@ TESTCASE (function_data)
 
   test_function_data_listener_reset (fd_listener);
 
-  g_thread_join (g_thread_new ("interceptor-test-function-data",
+  g_thread_join (g_thread_new("thread-995",
       target_nop_function_a, "bdgr"));
   g_assert_cmpuint (fd_listener->on_enter_call_count, ==, 1);
   g_assert_cmpuint (fd_listener->on_leave_call_count, ==, 1);
@@ -647,7 +647,7 @@ TESTCASE (replace_one)
   free (ret);
 }
 
-#ifdef HAVE_FRIDA_GLIB
+#ifdef HAVE_AINAKAN_GLIB
 
 static gpointer replacement_malloc_calling_malloc_and_replaced_free (
     gsize size);

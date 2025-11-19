@@ -1,4 +1,4 @@
-symsrv_prefix = get_option('prefix') / get_option('libdir') / 'frida'
+symsrv_prefix = get_option('prefix') / get_option('libdir') / 'ainakan'
 uninstalled_symsrv_prefix = meson.current_source_dir()
 
 if host_os_family == 'windows'

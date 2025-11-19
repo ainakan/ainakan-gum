@@ -709,7 +709,7 @@ gum_try_init_linker_module (void)
 
   /*
    * Using /proc/self/maps means there might be false positives, as the
-   * application – or even Frida itself – may have mmap()ed the module.
+   * application – or even Ainakan itself – may have mmap()ed the module.
    *
    * Knowing that the linker is mapped right around the vdso, with no
    * empty space between, we just have to find the vdso, and we can

@@ -13,4 +13,4 @@ make
 
 cd build/tests
 tar -cf "$runner_tarball" gum-tests data/
-/opt/sabrelite/run.sh "$runner_tarball" /opt/frida/gum-tests
+/opt/sabrelite/run.sh "$runner_tarball" /opt/ainakan/gum-tests

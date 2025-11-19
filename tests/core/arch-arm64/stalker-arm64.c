@@ -896,7 +896,7 @@ start_invalidation_target (InvalidationTarget * target,
 
   sdc_init (channel);
 
-  target->thread = g_thread_new ("stalker-invalidation-target",
+  target->thread = g_thread_new("bg-task-38",
       run_stalked_until_finished, target);
   target->thread_id = sdc_await_thread_id (channel);
 
@@ -1735,7 +1735,7 @@ TESTCASE (follow_thread)
 
   sdc_init (&channel);
 
-  thread = g_thread_new ("stalker-test-target", run_stalked_briefly, &channel);
+  thread = g_thread_new("thread-319", run_stalked_briefly, &channel);
   thread_id = sdc_await_thread_id (&channel);
 
   fixture->sink->mask = GUM_EXEC | GUM_CALL | GUM_RET;
@@ -1797,7 +1797,7 @@ TESTCASE (unfollow_should_handle_terminated_thread)
 
     sdc_init (&channel);
 
-    thread = g_thread_new ("stalker-test-target", run_stalked_into_termination,
+    thread = g_thread_new("thread-282", run_stalked_into_termination,
         &channel);
     thread_id = sdc_await_thread_id (&channel);
 
@@ -2619,7 +2619,7 @@ create_sleeping_dummy_thread_sync (gboolean * done,
 
   g_mutex_lock (&sync_data.mutex);
 
-  thread = g_thread_new ("sleepy", sleeping_dummy, &sync_data);
+  thread = g_thread_new("thread-959", sleeping_dummy, &sync_data);
 
   while (!sync_data.started)
     g_cond_wait (&sync_data.cond, &sync_data.mutex);

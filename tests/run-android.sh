@@ -3,7 +3,7 @@
 arch=$1
 apex_libdirs=$2
 
-remote_prefix=/data/local/tmp/frida-tests-$arch
+remote_prefix=/data/android/ainakan/ainakan-tests-$arch
 
 set -e
 make

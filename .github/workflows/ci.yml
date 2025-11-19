@@ -145,7 +145,7 @@ jobs:
         arch: [x86, x86_64, x86_64-musl, armhf, arm64, arm64-musl, mips, mipsel, mips64, mips64el]
       fail-fast: false
     runs-on: ubuntu-latest
-    container: ghcr.io/frida/x-tools-linux-${{ matrix.arch }}:latest
+    container: ghcr.io/ainakan/x-tools-linux-${{ matrix.arch }}:latest
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
@@ -175,7 +175,7 @@ jobs:
         arch: [armbe8, arm64be]
       fail-fast: false
     runs-on: ubuntu-latest
-    container: ghcr.io/frida/x-tools-linux-${{ matrix.arch }}:latest
+    container: ghcr.io/ainakan/x-tools-linux-${{ matrix.arch }}:latest
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
@@ -216,7 +216,7 @@ jobs:
             export LD_LIBRARY_PATH=/lib:/lib64:/libilp32
             /sbin/entropy
             cat /etc/motd
-            export PS1='\u@frida:\w\$ '
+            export PS1='\u@ainakan:\w\$ '
             /root/gum-tests
             status=\$?
             echo "exit status: \$status"
@@ -277,7 +277,7 @@ jobs:
             EOF
 
             cat <<EOF > /workspace/Dockerfile.ci
-            FROM ghcr.io/frida/x-tools-linux-be-target:latest
+            FROM ghcr.io/ainakan/x-tools-linux-be-target:latest
 
             ENV DEBIAN_FRONTEND=noninteractive
             RUN apt-get update && \
@@ -348,36 +348,36 @@ jobs:
       - name: Test on Corellium iOS device
         if: matrix.id == 'ios-arm64'
         continue-on-error: true
-        uses: frida/corellium-action@v4
+        uses: ainakan/corellium-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          gateway: corellium.frida.re
+          gateway: corellium.ainakan.re
           device: ios-12.5.7-arm64
           upload: /tmp/runner.tar.gz
           run: |
             cd /usr/local
-            rm -rf opt/frida
-            mkdir -p opt/frida
-            cd opt/frida
+            rm -rf opt/ainakan
+            mkdir -p opt/ainakan
+            cd opt/ainakan
             tar xf $ASSET_PATH
             ./gum-tests
       - name: Test on Corellium Android device
         if: matrix.id == 'android-arm64'
         continue-on-error: true
-        uses: frida/corellium-action@v4
+        uses: ainakan/corellium-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          gateway: corellium.frida.re
+          gateway: corellium.ainakan.re
           device: android-8.1.0-arm64
           upload: /tmp/runner.tar.gz
           run: |
-            cd /data/local/tmp
+            cd /data/android/ainakan
             tar xf $ASSET_PATH
             ./gum-tests
 
   qnx-armeabi:
     runs-on: ubuntu-latest
-    container: ghcr.io/frida/qnx-tools:latest
+    container: ghcr.io/ainakan/qnx-tools:latest
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
@@ -401,7 +401,7 @@ jobs:
       - name: Test
         run: |
           tar -C build/tests -cf /tmp/runner.tar gum-tests data/
-          /opt/sabrelite/run.sh /tmp/runner.tar /opt/frida/gum-tests
+          /opt/sabrelite/run.sh /tmp/runner.tar /opt/ainakan/gum-tests
 
   # This job is used to check that the targetfunctions are built correctly for
   # all supported architectures. We do this because the binary artifacts are
@@ -413,7 +413,7 @@ jobs:
         arch: [x86, x86_64, armhf, armbe8, arm64, arm64be, arm64beilp32, mips, mipsel, mips64, mips64el]
       fail-fast: false
     runs-on: ubuntu-latest
-    container: ghcr.io/frida/x-tools-linux-${{ matrix.arch }}:latest
+    container: ghcr.io/ainakan/x-tools-linux-${{ matrix.arch }}:latest
     steps:
       - name: Check out repo
         uses: actions/checkout@v4

@@ -42,16 +42,16 @@ case $host_os in
   ios)
     cat << EOF > "$runner_script"
 cd /usr/local
-rm -rf opt/frida
-mkdir -p opt/frida
-cd opt/frida
+rm -rf opt/ainakan
+mkdir -p opt/ainakan
+cd opt/ainakan
 tar xf \$ASSET_PATH
 ./gum-tests
 EOF
     ;;
   android)
     cat << EOF > "$runner_script"
-cd /data/local/tmp
+cd /data/android/ainakan
 tar xf \$ASSET_PATH
 ./gum-tests
 EOF
@@ -59,7 +59,7 @@ EOF
 esac
 
 curl \
-    https://corellium.frida.re/devices/$device \
+    https://corellium.ainakan.re/devices/$device \
     --form "asset=@$runner_tarball" \
     --form "script=<$runner_script" \
     --form-string $'marker=\n*** Finished with exit code: ' \

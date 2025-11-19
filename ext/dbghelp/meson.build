@@ -1,4 +1,4 @@
-dbghelp_prefix = get_option('prefix') / get_option('libdir') / 'frida'
+dbghelp_prefix = get_option('prefix') / get_option('libdir') / 'ainakan'
 uninstalled_dbghelp_prefix = meson.current_source_dir()
 
 if host_os_family == 'windows'

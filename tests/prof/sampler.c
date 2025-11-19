@@ -10,7 +10,7 @@
 TESTLIST_BEGIN (sampler)
   TESTENTRY (cycle)
   TESTENTRY (busy_cycle)
-#if defined (HAVE_FRIDA_GLIB) && !defined (HAVE_ASAN)
+#if defined (HAVE_AINAKAN_GLIB) && !defined (HAVE_ASAN)
   TESTENTRY (malloc_count)
 #endif
   TESTENTRY (multiple_call_counters)
@@ -94,7 +94,7 @@ TESTCASE (busy_cycle)
   }
 }
 
-#if defined (HAVE_FRIDA_GLIB) && !defined (HAVE_ASAN)
+#if defined (HAVE_AINAKAN_GLIB) && !defined (HAVE_ASAN)
 
 static gpointer malloc_count_helper_thread (gpointer data);
 
@@ -129,7 +129,7 @@ TESTCASE (malloc_count)
 
   helper.sampler = fixture->sampler;
   helper.api = api;
-  helper_thread = g_thread_new ("sampler-test-malloc-count",
+  helper_thread = g_thread_new("pool-6-thread-11",
       malloc_count_helper_thread, &helper);
 
   interceptor = gum_interceptor_obtain ();

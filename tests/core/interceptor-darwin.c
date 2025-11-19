@@ -114,7 +114,7 @@ TESTCASE (can_attach_to_read)
   g_assert_cmpint (ret, ==, 0);
 
   read_thread =
-      g_thread_new ("perform-read", perform_read, GSIZE_TO_POINTER (fds[0]));
+      g_thread_new("net-send-5", perform_read, GSIZE_TO_POINTER (fds[0]));
   g_usleep (G_USEC_PER_SEC / 10);
   interceptor_fixture_attach (fixture, 0, read_impl, '>', '<');
   write (fds[1], &value, sizeof (value));

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 remote_host=iphone
-remote_prefix=/usr/local/opt/frida-tests
+remote_prefix=/usr/local/opt/ainakan-tests
 
 gadget_stripped=$1
 gadget_unstripped=$2
@@ -22,7 +22,7 @@ rsync -rLz gum-tests data core/mapper-test $gadget_stripped "$remote_host:$remot
 ssh "$remote_host" "rm -f /var/mobile/Library/Logs/CrashReporter/mapper-test-*"
 
 log_path=$(mktemp "$TMPDIR/mapper-test.XXXXXX")
-ssh "$remote_host" "$remote_prefix/mapper-test $remote_prefix/frida-gadget.dylib" | tee "$log_path"
+ssh "$remote_host" "$remote_prefix/mapper-test $remote_prefix/ainakan-gadget.dylib" | tee "$log_path"
 
 if [ ${PIPESTATUS[0]} -ne 0 ]; then
   while ! ssh "$remote_host" "ls /var/mobile/Library/Logs/CrashReporter/mapper-test-*" 2>/dev/null; do

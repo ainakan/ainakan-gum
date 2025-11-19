@@ -26,8 +26,8 @@ gum_heap_sources = [
 
 install_headers(gum_heap_headers, subdir: install_header_subdir / 'heap')
 
-gum_heap = library('frida-gum-heap-' + api_version, gum_heap_sources,
-  c_args: frida_component_cflags,
+gum_heap = library('ainakan-gum-heap-' + api_version, gum_heap_sources,
+  c_args: ainakan_component_cflags,
   include_directories: gum_incdirs,
   dependencies: gum_dep,
   install: true,
@@ -36,13 +36,13 @@ gum_heap = library('frida-gum-heap-' + api_version, gum_heap_sources,
 gum_heap_dep = declare_dependency(link_with: gum_heap)
 
 pkg = import('pkgconfig')
-pkg.generate(filebase: 'frida-gum-heap-' + api_version,
+pkg.generate(filebase: 'ainakan-gum-heap-' + api_version,
   name: 'GumHeap',
-  version: frida_version,
+  version: ainakan_version,
   description: 'Heap instrumentation library built on top of Gum',
-  requires: ['frida-gum-' + api_version],
+  requires: ['ainakan-gum-' + api_version],
   subdirs: install_header_basedir,
   libraries: [gum_heap],
 )
 
-meson.override_dependency('frida-gum-heap-' + api_version, gum_heap_dep)
+meson.override_dependency('ainakan-gum-heap-' + api_version, gum_heap_dep)

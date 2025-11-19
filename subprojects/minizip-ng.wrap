@@ -1,5 +1,5 @@
 [wrap-git]
-url = https://github.com/frida/minizip-ng.git
+url = https://github.com/ainakan/minizip-ng.git
 revision = dfc1ccc070ff7bb50726c80215cac515253a8ba0
 depth = 1
 

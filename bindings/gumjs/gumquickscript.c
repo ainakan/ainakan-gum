@@ -1439,7 +1439,7 @@ gum_quick_worker_on_runtime_loaded (JSValue error,
         self->asset->name);
 
     val = JS_Eval (ctx, init_code, strlen (init_code),
-        "/_frida_worker_runtime.js",
+        "/_ainakan_worker_runtime.js",
         JS_EVAL_TYPE_GLOBAL | JS_EVAL_FLAG_STRICT);
     if (!JS_IsException (val))
       self->state = GUM_WORKER_RUNNING;

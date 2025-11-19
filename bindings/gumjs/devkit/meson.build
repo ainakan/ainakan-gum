@@ -1,14 +1,14 @@
 devkit_outputs = [
-  'frida-gumjs.h',
-  static_lib_prefix + 'frida-gumjs' + static_lib_suffix,
-  'frida-gumjs-example.c',
+  'ainakan-gumjs.h',
+  static_lib_prefix + 'ainakan-gumjs' + static_lib_suffix,
+  'ainakan-gumjs-example.c',
 ]
 
 if cc.get_argument_syntax() == 'msvc'
   devkit_outputs += [
-    'frida-gumjs-example.sln',
-    'frida-gumjs-example.vcxproj',
-    'frida-gumjs-example.vcxproj.filters',
+    'ainakan-gumjs-example.sln',
+    'ainakan-gumjs-example.vcxproj',
+    'ainakan-gumjs-example.vcxproj.filters',
   ]
 endif
 
@@ -17,10 +17,10 @@ custom_target('gumjs-devkit',
   output: devkit_outputs,
   command: [
     mkdevkit,
-    'frida-gumjs',
+    'ainakan-gumjs',
     f'@host_os@-@host_arch@',
     meson.current_build_dir(),
   ] + devkit_options,
   install: true,
-  install_dir: get_option('libdir') / 'frida' / 'devkits' / 'gumjs'
+  install_dir: get_option('libdir') / 'ainakan' / 'devkits' / 'gumjs'
 )

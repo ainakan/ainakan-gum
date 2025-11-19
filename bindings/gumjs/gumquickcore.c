@@ -194,7 +194,7 @@ GUMJS_DECLARE_FUNCTION (gumjs_set_unhandled_exception_callback)
 GUMJS_DECLARE_FUNCTION (gumjs_set_incoming_message_callback)
 GUMJS_DECLARE_FUNCTION (gumjs_wait_for_event)
 
-GUMJS_DECLARE_GETTER (gumjs_frida_get_heap_size)
+GUMJS_DECLARE_GETTER (gumjs_ainakan_get_heap_size)
 
 GUMJS_DECLARE_FUNCTION (gumjs_script_evaluate)
 GUMJS_DECLARE_FUNCTION (gumjs_script_load)
@@ -465,10 +465,10 @@ static const JSCFunctionListEntry gumjs_root_entries[] =
   JS_CFUNC_DEF ("_waitForEvent", 0, gumjs_wait_for_event),
 };
 
-static const JSCFunctionListEntry gumjs_frida_entries[] =
+static const JSCFunctionListEntry gumjs_ainakan_entries[] =
 {
-  JS_PROP_STRING_DEF ("version", FRIDA_VERSION, JS_PROP_C_W_E),
-  JS_CGETSET_DEF ("heapSize", gumjs_frida_get_heap_size, NULL),
+  JS_PROP_STRING_DEF ("version", AINAKAN_VERSION, JS_PROP_C_W_E),
+  JS_CGETSET_DEF ("heapSize", gumjs_ainakan_get_heap_size, NULL),
 };
 
 static const JSCFunctionListEntry gumjs_script_entries[] =
@@ -1538,9 +1538,9 @@ _gum_quick_core_init (GumQuickCore * self,
       G_N_ELEMENTS (gumjs_root_entries));
 
   obj = JS_NewObject (ctx);
-  JS_SetPropertyFunctionList (ctx, obj, gumjs_frida_entries,
-      G_N_ELEMENTS (gumjs_frida_entries));
-  JS_DefinePropertyValueStr (ctx, ns, "Frida", obj, JS_PROP_C_W_E);
+  JS_SetPropertyFunctionList (ctx, obj, gumjs_ainakan_entries,
+      G_N_ELEMENTS (gumjs_ainakan_entries));
+  JS_DefinePropertyValueStr (ctx, ns, "Ainakan", obj, JS_PROP_C_W_E);
 
   obj = JS_NewObject (ctx);
   JS_SetPropertyFunctionList (ctx, obj, gumjs_script_entries,
@@ -2156,7 +2156,7 @@ _gum_quick_scope_leave (GumQuickScope * self)
   _gum_quick_stalker_process_pending (core->stalker, self);
 }
 
-GUMJS_DEFINE_GETTER (gumjs_frida_get_heap_size)
+GUMJS_DEFINE_GETTER (gumjs_ainakan_get_heap_size)
 {
   return JS_NewUint32 (ctx, gum_peek_private_memory_usage ());
 }

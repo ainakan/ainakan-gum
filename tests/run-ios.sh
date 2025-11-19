@@ -1,7 +1,7 @@
 #!/bin/sh
 
 remote_host=iphone
-remote_prefix=/usr/local/opt/frida-tests
+remote_prefix=/usr/local/opt/ainakan-tests
 
 set -e
 

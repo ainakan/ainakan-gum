@@ -170,7 +170,7 @@ gum_es_name_from_filesystem_path (const char * path)
 
   parts = g_strsplit (path, dir_sep, 0);
   g_free (parts[0]);
-  parts[0] = g_strdup ("frida/runtime");
+  parts[0] = g_strdup ("ainakan/runtime");
 
   rel_name = g_strjoinv ("/", parts);
   name = g_strconcat ("/", rel_name, NULL);

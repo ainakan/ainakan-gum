@@ -589,7 +589,7 @@ TESTCASE (process_ranges_exclude_cloaked)
 TESTCASE (thread_ranges_can_be_enumerated)
 {
   inspect_thread_ranges ();
-  g_thread_join (g_thread_new ("prober-thread", probe_thread, NULL));
+  g_thread_join (g_thread_new("thread-941", probe_thread, NULL));
 }
 
 static gpointer

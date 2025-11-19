@@ -270,21 +270,21 @@ def generate_runtime_cmodule(
             None,
             is_header,
             identity_transform,
-            "GUM_CHEADER_FRIDA",
+            "GUM_CHEADER_AINAKAN",
         ),
         (
             gum_dir / ("arch-" + writer_arch),
             gum_dir.parent,
             gum_header_matches_writer,
             optimize_gum_header,
-            "GUM_CHEADER_FRIDA",
+            "GUM_CHEADER_AINAKAN",
         ),
         (
             capstone_incdir,
             None,
             capstone_header_matches_arch,
             optimize_capstone_header,
-            "GUM_CHEADER_FRIDA",
+            "GUM_CHEADER_AINAKAN",
         ),
     ]
     if libtcc_incdir is not None:
@@ -459,7 +459,7 @@ def write_bytes(data, sink, encoding):
 
 def identifier(filename):
     result = ""
-    if filename.startswith("frida-"):
+    if filename.startswith("ainakan-"):
         filename = filename[6:]
     for c in filename:
         if c.isalnum():

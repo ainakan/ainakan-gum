@@ -2061,7 +2061,7 @@ gum_es_program_new (void)
 
   for (auto cur = gumjs_runtime_modules; cur->name != NULL; cur++)
   {
-    auto name = g_strconcat ("/frida/runtime/", cur->name, NULL);
+    auto name = g_strconcat ("/ainakan/runtime/", cur->name, NULL);
     auto asset = gum_es_asset_new (name, cur->source_code,
         strlen (cur->source_code), NULL);
 

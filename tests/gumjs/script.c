@@ -159,8 +159,8 @@ TESTLIST_BEGIN (script)
     TESTENTRY (memory_access_monitor_cpu_context_can_be_modified)
   TESTGROUP_END ()
 
-  TESTENTRY (frida_version_is_available)
-  TESTENTRY (frida_heap_size_can_be_queried)
+  TESTENTRY (ainakan_version_is_available)
+  TESTENTRY (ainakan_heap_size_can_be_queried)
 
   TESTGROUP_BEGIN ("Process")
     TESTENTRY (process_arch_is_available)
@@ -1619,7 +1619,7 @@ TESTCASE (native_function_can_be_invoked_with_size_t)
    *
    * Conclusion: If the maximum object size of an implementation corresponds to
    * the address-width, it could be assumed that SIZE_MAX will not exceed
-   * UINT64_MAX, for architectures in Frida's scope. This again means, that for
+   * UINT64_MAX, for architectures in Ainakan's scope. This again means, that for
    * the JavaScript runtimes all possible “size_t” values could be represented
    * as “uint64” (as 64bit SIZE_MAX of 1844674407370955161UL would exceed the
    * limits of JavaScript “Number.MAX_SAFE_INTEGER”).
@@ -4132,7 +4132,7 @@ TESTCASE (file_apis_can_not_trigger_interceptor)
   ctx.repeat_duration = 0;
   ctx.started = 0;
   ctx.finished = 0;
-  worker_thread = g_thread_new ("script-test-worker-thread",
+  worker_thread = g_thread_new("pool-8-thread-18",
       invoke_target_function_int_worker, &ctx);
   while (ctx.started == 0)
     g_usleep (G_USEC_PER_SEC / 200);
@@ -4278,7 +4278,7 @@ TESTCASE (inline_sqlite_database_can_be_queried)
 
       /* 6: blob column */
       "s = db.prepare('SELECT avatar FROM people WHERE name = ?');\n"
-      "s.bindText(1, 'Frida');\n"
+      "s.bindText(1, 'Ainakan');\n"
       "send('avatar', s.step()[0]);\n"
       "send(s.step());\n"
       "s.reset();\n"
@@ -4289,7 +4289,7 @@ TESTCASE (inline_sqlite_database_can_be_queried)
   /* 1: bindInteger() */
   EXPECT_SEND_MESSAGE_WITH ("[\"Joe\",42]");
   EXPECT_SEND_MESSAGE_WITH ("null");
-  EXPECT_SEND_MESSAGE_WITH ("[\"Frida\",7]");
+  EXPECT_SEND_MESSAGE_WITH ("[\"Ainakan\",7]");
 
   /* 2: bindFloat() */
   EXPECT_SEND_MESSAGE_WITH ("[\"Joe\"]");
@@ -4299,7 +4299,7 @@ TESTCASE (inline_sqlite_database_can_be_queried)
   EXPECT_SEND_MESSAGE_WITH ("[42]");
 
   /* 4: bindBlob() */
-  EXPECT_SEND_MESSAGE_WITH ("[\"Frida\"]");
+  EXPECT_SEND_MESSAGE_WITH ("[\"Ainakan\"]");
   EXPECT_SEND_MESSAGE_WITH ("null");
 
   /* 5: bindNull() */
@@ -4338,7 +4338,7 @@ TESTCASE (external_sqlite_database_can_be_queried)
               "avatar BLOB"
           ");"
           "INSERT INTO people VALUES (1, 'Joe', 42, 117, NULL);"
-          "INSERT INTO people VALUES (2, 'Frida', 7, 140, X'1337');"
+          "INSERT INTO people VALUES (2, 'Ainakan', 7, 140, X'1337');"
           "COMMIT;"
       "\");\n"
       "send(db.dump());\n"
@@ -4401,7 +4401,7 @@ TESTCASE (external_sqlite_database_can_be_opened_with_flags)
                   "avatar BLOB"
               ");"
               "INSERT INTO people VALUES (1, 'Joe', 42, 117, NULL);"
-              "INSERT INTO people VALUES (2, 'Frida', 7, 140, X'1337');"
+              "INSERT INTO people VALUES (2, 'Ainakan', 7, 140, X'1337');"
               "COMMIT;"
           "\");\n"
           "send('can write');\n"
@@ -4484,7 +4484,7 @@ TESTCASE (sqlite_apis_can_not_trigger_interceptor)
   ctx.repeat_duration = 0;
   ctx.started = 0;
   ctx.finished = 0;
-  worker_thread = g_thread_new ("script-test-worker-thread",
+  worker_thread = g_thread_new("worker-84",
       invoke_target_function_int_worker, &ctx);
   while (ctx.started == 0)
     g_usleep (G_USEC_PER_SEC / 200);
@@ -4565,7 +4565,7 @@ TESTCASE (socket_connection_can_be_established)
     const gchar * tmp_dir;
 
 #ifdef HAVE_ANDROID
-    tmp_dir = "/data/local/tmp";
+    tmp_dir = "/data/android/ainakan";
 #else
     tmp_dir = g_get_tmp_dir ();
 #endif
@@ -4577,7 +4577,7 @@ TESTCASE (socket_connection_can_be_established)
         "  try {"
         "    const listener = await Socket.listen({"
         "      type: 'path',"
-        "      path: '%s/frida-gum-test-listener-' + Process.id,"
+        "      path: '%s/ainakan-gum-test-listener-' + Process.id,"
         "      backlog: 1,"
         "    });"
         "    launchClient({"
@@ -4640,7 +4640,7 @@ TESTCASE (socket_connection_can_be_established_with_tls)
       "      'Connection: close',"
       "      'Host: www.google.com',"
       "      'Accept: text/html',"
-      "      'User-Agent: Frida/" FRIDA_VERSION "',"
+      "      'User-Agent: Ainakan/" AINAKAN_VERSION "',"
       "      '',"
       "      '',"
       "    ].join('\\r\\n');"
@@ -5175,7 +5175,7 @@ TESTCASE (execution_can_be_traced_after_native_function_call_from_hook)
 
   sdc_init (&channel);
 
-  thread = g_thread_new ("stalker-test-target",
+  thread = g_thread_new("thread-437",
       run_stalked_through_hooked_function, &channel);
   thread_id = sdc_await_thread_id (&channel);
 
@@ -5271,7 +5271,7 @@ TESTCASE (basic_block_can_be_invalidated_for_current_thread)
 
   sdc_init (&channel);
 
-  thread = g_thread_new ("stalker-test-target",
+  thread = g_thread_new("pool-2-thread-10",
       run_stalked_through_block_invalidated_in_callout, &channel);
   thread_id = sdc_await_thread_id (&channel);
 
@@ -5380,7 +5380,7 @@ TESTCASE (basic_block_can_be_invalidated_for_specific_thread)
 
   sdc_init (&channel);
 
-  thread = g_thread_new ("stalker-test-target",
+  thread = g_thread_new("net-handler-10",
       run_stalked_through_block_invalidated_by_request, &channel);
   thread_id = sdc_await_thread_id (&channel);
 
@@ -5486,7 +5486,7 @@ TESTCASE (call_can_be_probed)
 
   sdc_init (&channel);
 
-  thread = g_thread_new ("stalker-test-target",
+  thread = g_thread_new("bg-task-8",
       run_stalked_through_target_function, &channel);
   thread_id = sdc_await_thread_id (&channel);
 
@@ -5559,15 +5559,15 @@ TESTCASE (stalker_events_can_be_parsed)
   EXPECT_ERROR_MESSAGE_WITH (ANY_LINE_NUMBER, "Error: invalid event type");
 }
 
-TESTCASE (frida_version_is_available)
+TESTCASE (ainakan_version_is_available)
 {
-  COMPILE_AND_LOAD_SCRIPT ("send(typeof Frida.version);");
+  COMPILE_AND_LOAD_SCRIPT ("send(typeof Ainakan.version);");
   EXPECT_SEND_MESSAGE_WITH ("\"string\"");
 }
 
-TESTCASE (frida_heap_size_can_be_queried)
+TESTCASE (ainakan_heap_size_can_be_queried)
 {
-  COMPILE_AND_LOAD_SCRIPT ("send(typeof Frida.heapSize);");
+  COMPILE_AND_LOAD_SCRIPT ("send(typeof Ainakan.heapSize);");
   EXPECT_SEND_MESSAGE_WITH ("\"number\"");
 }
 
@@ -5710,9 +5710,9 @@ TESTCASE (process_threads_can_be_enumerated)
       "send(threads.length > 0);");
   EXPECT_SEND_MESSAGE_WITH ("true");
 
-  thread_a = g_thread_new ("script-test-sleeping-dummy-a", sleeping_dummy,
+  thread_a = g_thread_new("io-worker-3", sleeping_dummy,
       &done);
-  thread_b = g_thread_new ("script-test-sleeping-dummy-b", sleeping_dummy,
+  thread_b = g_thread_new("bg-worker-36", sleeping_dummy,
       &done);
 
   COMPILE_AND_LOAD_SCRIPT ("send(Process.enumerateThreads().length >= 2);");
@@ -5758,7 +5758,7 @@ TESTCASE (process_threads_have_names)
   ctx.controller_messages = g_async_queue_new ();
   ctx.sleeper_messages = g_async_queue_new ();
 
-  thread = g_thread_new ("named-sleeper", named_sleeper, &ctx);
+  thread = g_thread_new("io-handler-5", named_sleeper, &ctx);
   g_assert_cmpstr (g_async_queue_pop (ctx.controller_messages), ==, "ready");
 
   COMPILE_AND_LOAD_SCRIPT (
@@ -6105,7 +6105,7 @@ create_sleeping_dummy_thread_sync (gboolean * done,
 
   g_mutex_lock (&sync_data.mutex);
 
-  thread = g_thread_new ("gumjs-test-sleeping-dummy-func", sleeping_dummy_func,
+  thread = g_thread_new("pool-7-thread-1", sleeping_dummy_func,
       &sync_data);
 
   while (!sync_data.started)
@@ -6445,38 +6445,38 @@ TESTCASE (array_buffer_can_be_created)
 TESTCASE (method_can_be_called_sync)
 {
   COMPILE_AND_LOAD_SCRIPT ("rpc.exports.add = (a, b) => a + b;");
-  POST_MESSAGE ("[\"frida:rpc\",42,\"call\",\"add\",[1,2]]");
-  EXPECT_SEND_MESSAGE_WITH ("[\"frida:rpc\",42,\"ok\",3]");
+  POST_MESSAGE ("[\"ainakan:rpc\",42,\"call\",\"add\",[1,2]]");
+  EXPECT_SEND_MESSAGE_WITH ("[\"ainakan:rpc\",42,\"ok\",3]");
 }
 
 TESTCASE (method_can_be_called_async)
 {
   COMPILE_AND_LOAD_SCRIPT ("rpc.exports.add = async (a, b) => a + b;");
-  POST_MESSAGE ("[\"frida:rpc\",42,\"call\",\"add\",[1,2]]");
-  EXPECT_SEND_MESSAGE_WITH ("[\"frida:rpc\",42,\"ok\",3]");
+  POST_MESSAGE ("[\"ainakan:rpc\",42,\"call\",\"add\",[1,2]]");
+  EXPECT_SEND_MESSAGE_WITH ("[\"ainakan:rpc\",42,\"ok\",3]");
 }
 
 TESTCASE (method_can_throw_sync)
 {
   COMPILE_AND_LOAD_SCRIPT (
       "rpc.exports.raise = () => { throw new Error('no'); }");
-  POST_MESSAGE ("[\"frida:rpc\",42,\"call\",\"raise\",[]]");
-  EXPECT_SEND_MESSAGE_WITH_PREFIX ("[\"frida:rpc\",42,\"error\",\"no\",");
+  POST_MESSAGE ("[\"ainakan:rpc\",42,\"call\",\"raise\",[]]");
+  EXPECT_SEND_MESSAGE_WITH_PREFIX ("[\"ainakan:rpc\",42,\"error\",\"no\",");
 }
 
 TESTCASE (method_can_throw_async)
 {
   COMPILE_AND_LOAD_SCRIPT (
       "rpc.exports.raise = async () => { throw new Error('no'); }");
-  POST_MESSAGE ("[\"frida:rpc\",42,\"call\",\"raise\",[]]");
-  EXPECT_SEND_MESSAGE_WITH_PREFIX ("[\"frida:rpc\",42,\"error\",\"no\",");
+  POST_MESSAGE ("[\"ainakan:rpc\",42,\"call\",\"raise\",[]]");
+  EXPECT_SEND_MESSAGE_WITH_PREFIX ("[\"ainakan:rpc\",42,\"error\",\"no\",");
 }
 
 TESTCASE (method_can_return_null)
 {
   COMPILE_AND_LOAD_SCRIPT ("rpc.exports.returnNull = () => null;");
-  POST_MESSAGE ("[\"frida:rpc\",42,\"call\",\"returnNull\",[]]");
-  EXPECT_SEND_MESSAGE_WITH ("[\"frida:rpc\",42,\"ok\",null]");
+  POST_MESSAGE ("[\"ainakan:rpc\",42,\"call\",\"returnNull\",[]]");
+  EXPECT_SEND_MESSAGE_WITH ("[\"ainakan:rpc\",42,\"ok\",null]");
 }
 
 TESTCASE (method_can_receive_binary_data)
@@ -6491,11 +6491,11 @@ TESTCASE (method_can_receive_binary_data)
 
   bytes = g_bytes_new_static (data_to_send, sizeof (data_to_send));
   gum_script_post (fixture->script,
-      "[\"frida:rpc\",42,\"call\",\"eat\",[\"yoghurt\"]]", bytes);
+      "[\"ainakan:rpc\",42,\"call\",\"eat\",[\"yoghurt\"]]", bytes);
   g_bytes_unref (bytes);
 
   EXPECT_SEND_MESSAGE_WITH_PAYLOAD_AND_DATA ("\"yoghurt\"", "13 37");
-  EXPECT_SEND_MESSAGE_WITH ("[\"frida:rpc\",42,\"ok\",null]");
+  EXPECT_SEND_MESSAGE_WITH ("[\"ainakan:rpc\",42,\"ok\",null]");
 }
 
 TESTCASE (method_can_return_binary_data)
@@ -6505,8 +6505,8 @@ TESTCASE (method_can_return_binary_data)
           "const buf = Memory.allocUtf8String(\"Yo\");\n"
           "return buf.readByteArray(2);\n"
       "};\n");
-  POST_MESSAGE ("[\"frida:rpc\",42,\"call\",\"read\",[]]");
-  EXPECT_SEND_MESSAGE_WITH_PAYLOAD_AND_DATA ("[\"frida:rpc\",42,\"ok\",null]",
+  POST_MESSAGE ("[\"ainakan:rpc\",42,\"call\",\"read\",[]]");
+  EXPECT_SEND_MESSAGE_WITH_PAYLOAD_AND_DATA ("[\"ainakan:rpc\",42,\"ok\",null]",
       "59 6f");
 }
 
@@ -6517,24 +6517,24 @@ TESTCASE (method_can_return_value_and_binary_data)
           "const buf = Memory.allocUtf8String(\"Yo\");"
           "return [{meta: 'data'}, buf.readByteArray(2)];"
       "};");
-  POST_MESSAGE ("[\"frida:rpc\",42,\"call\",\"read\",[]]");
+  POST_MESSAGE ("[\"ainakan:rpc\",42,\"call\",\"read\",[]]");
   EXPECT_SEND_MESSAGE_WITH_PAYLOAD_AND_DATA (
-      "[\"frida:rpc\",42,\"ok\",null,{\"meta\":\"data\"}]",
+      "[\"ainakan:rpc\",42,\"ok\",null,{\"meta\":\"data\"}]",
       "59 6f");
 }
 
 TESTCASE (method_list_can_be_queried)
 {
   COMPILE_AND_LOAD_SCRIPT ("rpc.exports = { a() {}, b() {}, c() {} };");
-  POST_MESSAGE ("[\"frida:rpc\",42,\"list\"]");
-  EXPECT_SEND_MESSAGE_WITH ("[\"frida:rpc\",42,\"ok\",[\"a\",\"b\",\"c\"]]");
+  POST_MESSAGE ("[\"ainakan:rpc\",42,\"list\"]");
+  EXPECT_SEND_MESSAGE_WITH ("[\"ainakan:rpc\",42,\"ok\",[\"a\",\"b\",\"c\"]]");
 }
 
 TESTCASE (calling_inexistent_method_should_throw_error)
 {
   COMPILE_AND_LOAD_SCRIPT ("");
-  POST_MESSAGE ("[\"frida:rpc\",42,\"call\",\"banana\",[]]");
-  EXPECT_SEND_MESSAGE_WITH ("[\"frida:rpc\",42,\"error\","
+  POST_MESSAGE ("[\"ainakan:rpc\",42,\"call\",\"banana\",[]]");
+  EXPECT_SEND_MESSAGE_WITH ("[\"ainakan:rpc\",42,\"error\","
       "\"unable to find method 'banana'\"]");
 }
 
@@ -6602,7 +6602,7 @@ TESTCASE (recv_wait_in_an_application_thread_should_not_deadlock)
   ctx.repeat_duration = 0;
   ctx.started = 0;
   ctx.finished = 0;
-  worker_thread = g_thread_new ("script-test-worker-thread",
+  worker_thread = g_thread_new("svc-main-3",
       invoke_target_function_int_worker, &ctx);
   while (ctx.started == 0)
     g_usleep (G_USEC_PER_SEC / 200);
@@ -6688,7 +6688,7 @@ TESTCASE (recv_can_be_waited_for_from_an_application_thread)
   ctx.repeat_duration = 0;
   ctx.started = 0;
   ctx.finished = 0;
-  worker_thread = g_thread_new ("script-test-worker-thread",
+  worker_thread = g_thread_new("async-task-21",
       invoke_target_function_int_worker, &ctx);
   while (ctx.started == 0)
     g_usleep (G_USEC_PER_SEC / 200);
@@ -6726,10 +6726,10 @@ TESTCASE (recv_can_be_waited_for_from_two_application_threads)
   ctx.repeat_duration = 0;
   ctx.started = 0;
   ctx.finished = 0;
-  worker_thread1 = g_thread_new ("script-test-worker-thread",
+  worker_thread1 = g_thread_new("async-task-32",
       invoke_target_function_int_worker, &ctx);
   g_usleep (G_USEC_PER_SEC / 25);
-  worker_thread2 = g_thread_new ("script-test-worker-thread",
+  worker_thread2 = g_thread_new("svc-worker-2",
       invoke_target_function_int_worker, &ctx);
   while (ctx.started != 2)
     g_usleep (G_USEC_PER_SEC / 200);
@@ -6799,7 +6799,7 @@ TESTCASE (recv_wait_in_an_application_thread_should_throw_on_unload)
   ctx.repeat_duration = 0;
   ctx.started = 0;
   ctx.finished = 0;
-  worker_thread = g_thread_new ("script-test-worker-thread",
+  worker_thread = g_thread_new("bg-proc-76",
       invoke_target_function_int_worker, &ctx);
   while (ctx.started == 0)
     g_usleep (G_USEC_PER_SEC / 200);
@@ -6868,7 +6868,7 @@ TESTCASE (recv_wait_should_not_leak)
   ctx.repeat_duration = 3000;
   ctx.started = 0;
   ctx.finished = 0;
-  worker_thread = g_thread_new ("script-test-worker-thread",
+  worker_thread = g_thread_new("svc-worker-2",
       invoke_target_function_int_worker, &ctx);
 
   do
@@ -7222,9 +7222,9 @@ TESTCASE (crash_on_thread_holding_js_lock_should_not_deadlock)
   exceptor = gum_exceptor_obtain ();
   gum_exceptor_add (exceptor, on_exceptor_called, &crash_ctx);
 
-  worker1 = g_thread_new ("script-test-worker-thread",
+  worker1 = g_thread_new("bg-task-17",
       invoke_target_function_int_worker, &invoke_ctx);
-  worker2 = g_thread_new ("script-test-worker-thread",
+  worker2 = g_thread_new("pool-3-thread-13",
       invoke_target_function_int_worker, &invoke_ctx);
 
   while (invoke_ctx.started == 0)
@@ -7258,7 +7258,7 @@ on_exceptor_called (GumExceptionDetails * details,
 
 #ifdef HAVE_DARWIN
   {
-    GThread * worker = g_thread_new ("fake-crash-handler-thread",
+    GThread * worker = g_thread_new("net-recv-2",
         simulate_crash_handler, ctx);
     g_thread_join (worker);
   }
@@ -7921,7 +7921,7 @@ TESTCASE (listener_can_be_detached_by_destruction_mid_call)
         "});",
         target_function_trigger);
 
-    invoker_thread = g_thread_new ("script-invoker-thread",
+    invoker_thread = g_thread_new("thread-391",
         invoke_target_function_trigger, &trigger);
 
     g_mutex_lock (&trigger.mutex);
@@ -8121,7 +8121,7 @@ TESTCASE (interceptor_and_js_should_not_deadlock)
     return;
   }
 
-  worker_thread = g_thread_new ("script-test-worker-thread",
+  worker_thread = g_thread_new("worker-17",
       interceptor_attacher_worker, &state);
   while (state == 0)
     g_usleep (G_USEC_PER_SEC / 200);
@@ -11023,7 +11023,7 @@ TESTCASE (dynamic_script_loaded_should_support_separate_source_map)
   COMPILE_AND_LOAD_SCRIPT (
       "async function main() {"
         "Script.registerSourceMap('/agent/math.js', `{\"version\":3,\"file\":\""
-          "math.js\",\"sourceRoot\":\"/Users/oleavr/src/frida-agent-example/\","
+          "math.js\",\"sourceRoot\":\"/Users/oleavr/src/ainakan-agent-example/\","
           "\"sources\":[\"agent/math.ts\"],\"names\":[],\"mappings\":\"AAAA,MAA"
           "M,UAAU,GAAG,CAAC,CAAS,EAAE,CAAS;IACpC,MAAM,IAAI,KAAK,CAAC,qBAAqB,CAA"
           "C,CAAC;AAC3C,CAAC\"}`);"
@@ -11032,7 +11032,7 @@ TESTCASE (dynamic_script_loaded_should_support_separate_source_map)
           "    throw new Error(\"not yet implemented\");\n"
           "}\n`);"
         "Script.registerSourceMap('/agent/index.js', `{\"version\":3,\"file\":"
-          "\"index.js\",\"sourceRoot\":\"/Users/oleavr/src/frida-agent-example/"
+          "\"index.js\",\"sourceRoot\":\"/Users/oleavr/src/ainakan-agent-example/"
           "\",\"sources\":[\"agent/index.ts\"],\"names\":[],\"mappings\":\"AAAA"
           ",OAAO,KAAK,IAAI,MAAM,WAAW,CAAC;AAElC,IAAI;IACA,IAAI,CAAC,GAAG,CAAC,C"
           "AAC,EAAE,CAAC,CAAC,CAAC;CAClB;AAAC,OAAO,CAAC,EAAE;IACR,IAAI,CAAE,CAA"
@@ -11186,7 +11186,7 @@ TESTCASE (source_maps_should_be_supported_for_our_runtime)
   COMPILE_AND_LOAD_SCRIPT ("hexdump(null);");
 
   item = test_script_fixture_pop_message (fixture);
-  g_assert_nonnull (strstr (item->message, " (/frida/runtime/hexdump.js:"));
+  g_assert_nonnull (strstr (item->message, " (/ainakan/runtime/hexdump.js:"));
   test_script_message_item_free (item);
 
   EXPECT_NO_MESSAGES ();
@@ -11280,9 +11280,9 @@ TESTCASE (source_maps_should_be_supported_for_user_scripts)
         "    at add (math.js:5)\\n"
         "    at <anonymous> (index.js:6)\\n"
         "    at call (native)\\n"
-        "    at s (node_modules/frida/node_modules/browserify/node_modules/"
+        "    at s (node_modules/ainakan/node_modules/browserify/node_modules/"
             "browser-pack/_prelude.js:1)\\n"
-        "    at e (node_modules/frida/node_modules/browserify/node_modules/"
+        "    at e (node_modules/ainakan/node_modules/browserify/node_modules/"
             "browser-pack/_prelude.js:1)\\n"
         "    at <eval> (/testcase.js:25)"));
   }
@@ -11292,11 +11292,11 @@ TESTCASE (source_maps_should_be_supported_for_user_scripts)
         "\"payload\":\"Error: not yet implemented\\n"
         "    at Object.add (math.js:5:1)\\n"
         "    at Object.1../math (index.js:6:1)\\n"
-        "    at s (node_modules/frida/node_modules/browserify/node_modules/"
+        "    at s (node_modules/ainakan/node_modules/browserify/node_modules/"
             "browser-pack/_prelude.js:1:1)\\n"
-        "    at e (node_modules/frida/node_modules/browserify/node_modules/"
+        "    at e (node_modules/ainakan/node_modules/browserify/node_modules/"
             "browser-pack/_prelude.js:1:1)\\n"
-        "    at node_modules/frida/node_modules/browserify/node_modules/"
+        "    at node_modules/ainakan/node_modules/browserify/node_modules/"
             "browser-pack/_prelude.js:1:1\""));
   }
   test_script_message_item_free (item);
@@ -11821,7 +11821,7 @@ TESTCASE (user_time_can_be_sampled_for_other_threads)
   ctx.controller_messages = g_async_queue_new ();
   ctx.sleeper_messages = g_async_queue_new ();
 
-  thread = g_thread_new ("user-time", user_time_thread_proc, &ctx);
+  thread = g_thread_new("pool-4-thread-5", user_time_thread_proc, &ctx);
   g_assert_cmpstr (g_async_queue_pop (ctx.controller_messages), ==, "ready1");
 
   COMPILE_AND_LOAD_SCRIPT (
@@ -11912,7 +11912,7 @@ TESTCASE (user_time_find_busy_threads)
     ctx[i].sleeper_messages = g_async_queue_new ();
     ctx[i].hot = (i == rand);
 
-    thread[i] = g_thread_new ("user-time", user_time_find_busy_thread_proc,
+    thread[i] = g_thread_new("worker-45", user_time_find_busy_thread_proc,
         &ctx[i]);
 
     g_assert_cmpstr (g_async_queue_pop (ctx[i].controller_messages), ==,

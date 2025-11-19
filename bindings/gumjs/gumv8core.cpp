@@ -222,7 +222,7 @@ GUMJS_DECLARE_FUNCTION (gumjs_wait_for_event)
 static void gumjs_global_get (Local<Name> property,
     const PropertyCallbackInfo<Value> & info);
 
-GUMJS_DECLARE_GETTER (gumjs_frida_get_heap_size)
+GUMJS_DECLARE_GETTER (gumjs_ainakan_get_heap_size)
 
 GUMJS_DECLARE_FUNCTION (gumjs_script_evaluate)
 GUMJS_DECLARE_FUNCTION (gumjs_script_load)
@@ -462,9 +462,9 @@ static const GumV8Function gumjs_global_functions[] =
   { NULL, NULL }
 };
 
-static const GumV8Property gumjs_frida_values[] =
+static const GumV8Property gumjs_ainakan_values[] =
 {
-  { "heapSize", gumjs_frida_get_heap_size, NULL },
+  { "heapSize", gumjs_ainakan_get_heap_size, NULL },
 
   { NULL, NULL }
 };
@@ -654,10 +654,10 @@ _gum_v8_core_init (GumV8Core * self,
       );
   scope->SetHandler (global_access);
 
-  auto frida = _gum_v8_create_module ("Frida", scope, isolate);
-  _gum_v8_module_add (module, frida, gumjs_frida_values, isolate);
-  frida->Set (_gum_v8_string_new_ascii (isolate, "version"),
-      _gum_v8_string_new_ascii (isolate, FRIDA_VERSION), ReadOnly);
+  auto ainakan = _gum_v8_create_module ("Ainakan", scope, isolate);
+  _gum_v8_module_add (module, ainakan, gumjs_ainakan_values, isolate);
+  ainakan->Set (_gum_v8_string_new_ascii (isolate, "version"),
+      _gum_v8_string_new_ascii (isolate, AINAKAN_VERSION), ReadOnly);
 
   auto script_module = _gum_v8_create_module ("Script", scope, isolate);
   _gum_v8_module_add (module, script_module, gumjs_script_functions, isolate);
@@ -1737,7 +1737,7 @@ gumjs_global_get (Local<Name> property,
   }
 }
 
-GUMJS_DEFINE_GETTER (gumjs_frida_get_heap_size)
+GUMJS_DEFINE_GETTER (gumjs_ainakan_get_heap_size)
 {
   info.GetReturnValue ().Set (gum_peek_private_memory_usage ());
 }

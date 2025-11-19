@@ -1,4 +1,4 @@
-project('frida-gum', 'c', 'cpp',
+project('ainakan-gum', 'c', 'cpp',
   version: run_command(find_program('python3'), files('tools' / 'detect-version.py'),
     capture: true,
     check: true).stdout().strip(),
@@ -15,9 +15,9 @@ if not import('fs').exists(releng)
   releng = meson.project_source_root() / 'releng'
 endif
 
-frida_version = get_option('frida_version')
-if frida_version == ''
-  frida_version = run_command(python, releng / 'frida_version.py', meson.project_source_root(), check: true).stdout().strip()
+ainakan_version = get_option('ainakan_version')
+if ainakan_version == ''
+  ainakan_version = run_command(python, releng / 'ainakan_version.py', meson.project_source_root(), check: true).stdout().strip()
 endif
 
 api_version = '1.0'
@@ -64,11 +64,11 @@ if cc.get_argument_syntax() == 'msvc' and host_arch == 'arm64'
   add_languages('masm')
 endif
 
-frida_component_cflags = []
+ainakan_component_cflags = []
 ndebug = get_option('b_ndebug')
 optimize_for_prod = ndebug == 'true' or (ndebug == 'if-release' and not get_option('debug'))
 if optimize_for_prod
-  frida_component_cflags += [
+  ainakan_component_cflags += [
     '-DG_DISABLE_ASSERT',
     '-DG_DISABLE_CHECKS',
     '-DG_DISABLE_CAST_CHECKS',
@@ -133,7 +133,7 @@ extra_gir_args_private = []
 
 cdata = configuration_data()
 
-cdata.set_quoted('FRIDA_VERSION', frida_version)
+cdata.set_quoted('AINAKAN_VERSION', ainakan_version)
 
 static = get_option('default_library') == 'static'
 if static
@@ -455,11 +455,11 @@ if get_option('devkits').length() != 0
 endif
 
 if glib_dep.type_name() == 'internal' or cc.has_function('g_thread_set_callbacks', dependencies: [glib_dep])
-  cdata.set('HAVE_FRIDA_GLIB', 1)
+  cdata.set('HAVE_AINAKAN_GLIB', 1)
 endif
 
 if ffi_dep.found() and (ffi_dep.type_name() == 'internal' or cc.has_function('ffi_set_mem_callbacks', dependencies: [ffi_dep]))
-  cdata.set('HAVE_FRIDA_LIBFFI', 1)
+  cdata.set('HAVE_AINAKAN_LIBFFI', 1)
 endif
 
 pthread_functions = [
@@ -593,7 +593,7 @@ if have_gumjs
     required: get_option('v8'),
     default_options: [
       'debug=false',
-      'embedder_string=-frida',
+      'embedder_string=-ainakan',
       'snapshot_compression=disabled',
       'pointer_compression=disabled',
       'shared_ro_heap=disabled',
@@ -656,7 +656,7 @@ configure_file(
 
 add_project_arguments(
   (cc.get_argument_syntax() == 'msvc') ? '/FI' : '-include', meson.current_build_dir() / 'config.h',
-  '-DG_LOG_DOMAIN="Frida"',
+  '-DG_LOG_DOMAIN="Ainakan"',
   '-DGLIB_VERSION_MIN_REQUIRED=GLIB_VERSION_2_56',
   '-DG_DISABLE_DEPRECATED',
   language: languages)
@@ -731,7 +731,7 @@ if libunwind_dep.found()
   gum_incdirs += include_directories('gum' / 'backend-libunwind' / 'include')
 endif
 
-install_header_basedir = 'frida-' + api_version
+install_header_basedir = 'ainakan-' + api_version
 install_header_subdir = install_header_basedir + '/gum'
 
 subdir('ext')

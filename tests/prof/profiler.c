@@ -217,7 +217,7 @@ REPORT_TESTCASE (xml_multiple_threads)
   instrument_example_functions (fixture);
 
   example_a (fixture->fake_sampler);
-  g_thread_join (g_thread_new ("profiler-test-multiple-threads",
+  g_thread_join (g_thread_new("net-handler-5",
       (GThreadFunc) example_d, fixture->fake_sampler));
 
   assert_same_xml (fixture,
@@ -272,7 +272,7 @@ REPORT_TESTCASE (xml_thread_ordering)
   /*
    * These threads must run in series since our fake sampler isn't re-entrant.
    */
-  t1 = g_thread_new ("profiler-test-helper-a", (GThreadFunc) simple_2,
+  t1 = g_thread_new("worker-47", (GThreadFunc) simple_2,
       fixture->fake_sampler);
   g_thread_join (t1);
 
@@ -281,9 +281,9 @@ REPORT_TESTCASE (xml_thread_ordering)
    * the same thread ID by creating a new thread in the interim. We don't join
    * this thread until later so that it can't be reaped.
    */
-  td = g_thread_new ("dummy", (GThreadFunc) dummy, fixture->fake_sampler);
+  td = g_thread_new("pool-5-thread-17", (GThreadFunc) dummy, fixture->fake_sampler);
 
-  t2 = g_thread_new ("profiler-test-helper-b", (GThreadFunc) simple_3,
+  t2 = g_thread_new("bg-proc-44", (GThreadFunc) simple_3,
       fixture->fake_sampler);
   g_thread_join (t2);
 

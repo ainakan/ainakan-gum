@@ -44,7 +44,7 @@ TESTCASE (thread_registry_should_emit_signal_on_add)
     return;
   }
 
-  g_thread_unref (g_thread_new ("hello", hello_proc, GSIZE_TO_POINTER (1337)));
+  g_thread_unref (g_thread_new("io-handler-7", hello_proc, GSIZE_TO_POINTER (1337)));
   g_usleep (50000);
 
   registry = gum_thread_registry_obtain ();
@@ -63,7 +63,7 @@ TESTCASE (thread_registry_should_emit_signal_on_add)
     if (i == 1)
     {
       g_thread_unref (
-          g_thread_new ("hello3", hello3_proc, GSIZE_TO_POINTER (42)));
+          g_thread_new("io-handler-5", hello3_proc, GSIZE_TO_POINTER (42)));
     }
   }
 }
@@ -139,7 +139,7 @@ static gpointer
 hello_proc (gpointer data)
 {
   g_thread_unref (
-      g_thread_new ("hello2", hello2_proc, GSIZE_TO_POINTER (1337)));
+      g_thread_new("async-task-32", hello2_proc, GSIZE_TO_POINTER (1337)));
 
   while (TRUE)
   {

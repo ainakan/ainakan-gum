@@ -1,5 +1,5 @@
 [wrap-git]
-url = https://github.com/frida/json-glib.git
+url = https://github.com/ainakan/json-glib.git
 revision = 1a39cbe151b02c4192987c8fcc98997a59db2154
 depth = 1
 
